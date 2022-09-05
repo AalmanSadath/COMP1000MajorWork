@@ -19,7 +19,7 @@ void draw() {
     yenemy=yenemy+5;
     ped();
     if (collision() == true) {
-        fill(100,100,100,99);
+        fill(100,100,100,98);
         rect(0,0,width,height);
         textAlign(CENTER);
         fill(0);
