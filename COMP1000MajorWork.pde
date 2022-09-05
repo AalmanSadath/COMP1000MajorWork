@@ -18,7 +18,7 @@ void draw() {
     player();
     yenemy=yenemy+5;
     ped();
-    if (collision() == true) {
+    if (collisionPed() == true) {
         fill(100,100,100,98);
         rect(0,0,width,height);
         textAlign(CENTER);
@@ -74,7 +74,7 @@ void keyPressed() {
     }
 }
 
-boolean collision() {
+boolean collisionPed() {
     float distX=abs(xcord-xenemy);
     float distY=abs(675-yenemy);
     if (distX <= 40) {
