@@ -20,21 +20,28 @@ float xEnemy=250;
 float walkRate=0;
 float yTree=0;
 
+float[] scale= new float[8];
+float[] radius= new float[8];
+int[] bulbs=new int[8];
+
+
 public void setup() {
     
 }
 
 
 public void draw() {
-    grass();
-    //genTree();
+    //grass();
+    genGrass();
     wallysWalk();
-    yTree++;
+    
     if (yTree>=height/3) {
+        //treeTransfer();
         yTree=0;
     }
+    yTree++;
     walkRate++;
-    if (walkRate>=50) {
+    if (walkRate>=50) { 
         walkRate=0;
     }
     player();
@@ -107,6 +114,7 @@ public boolean collisionPed() {
 }
 
 public void wallysWalk() {
+    rectMode(CORNER);
     fill(193,193,171);
     strokeWeight(2);
     for (float rows=0; rows<16; rows++) {
@@ -116,14 +124,36 @@ public void wallysWalk() {
     }
 }
 
-public void genTree() {
+public void genGrass() {
     rectMode(CENTER);
     fill(0,155,0);
     strokeWeight(2);
-    rect(width/10,yTree-width/6,width/5,height/3);
-    rect(width/10,yTree+width/6,width/5,height/3);
-    rect(width/10,yTree+height/2,width/5,height/3);
+    //for(int i=-1;i<=5;i+=2){
+    //   rect(width/10,yTree+(height*i/6),width/5,height/3);
+    //    //drawTree(width/10,yTree+(height*i/6),scale[0],bulbs[0],radius[0]);
+    //    rect(width*9/10,yTree+(height*i/6),width/5,height/3);
+        //drawTree(width/10,yTree+(height*i/6),scale[0],bulbs[0],radius[0]);
+    //}
+    rect(width/10,yTree-height/6,width/5,height/3);
+    //drawTree(width/10,yTree-height/6,scale[0],bulbs[0],radius[0]);
+    rect(width/10,yTree+height/6,width/5,height/3);
+    //drawTree(width/10,yTree+height/6,scale[1],bulbs[1],radius[1]);
+    rect(width/10,yTree+(height*3/6),width/5,height/3);
+    //drawTree(width/10,yTree+(height*3/6),scale[2],bulbs[2],radius[2]);
     rect(width/10,yTree+(height*5/6),width/5,height/3);
+    //drawTree(width/10,yTree+(height*5/6),scale[3],bulbs[3],radius[3]);
+    rect(width*9/10,yTree-height/6,width/5,height/3);
+    //drawTree(width*9/10,yTree-height/6,scale[4],bulbs[4],radius[4]);
+    rect(width*9/10,yTree+height/6,width/5,height/3);
+    //drawTree(width*9/10,yTree+height/6,scale[5],bulbs[5],radius[5]);
+    rect(width*9/10,yTree+(height*3/6),width/5,height/3);
+    //drawTree(width*9/10,yTree+(height*3/6),scale[6],bulbs[6],radius[6]);
+    rect(width*9/10,yTree+(height*5/6),width/5,height/3);
+    //drawTree(width*9/10,yTree+(height*5/6),scale[7],bulbs[7],radius[7]);
+}
+
+public void drawTree(int x, int y, float scale, int bulbs, float radius){
+
 }
   public void settings() {  size(500,750); }
   static public void main(String[] passedArgs) {
