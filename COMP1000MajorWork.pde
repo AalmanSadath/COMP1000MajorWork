@@ -10,7 +10,7 @@ float[] scaleArr= new float[8];
 float[] radiusArr= new float[8];
 int[] bulbsArr=new int[8];
 int[] treeHeights={-1,1,3,5};
-int[][] pedArr=new int[6][3];
+int[][] pedArr=new int[6][6];
 int[][] primeBottles=new int[3][2];
 
 void setup() {
@@ -24,6 +24,9 @@ void setup() {
         pedArr[i][0]=int(random(width/5+25,(width*4/5)-25)); //x coordinate of ped
         pedArr[i][1]=-20; //y coordinate of ped starts offscreen to provide smoothness
         pedArr[i][2]=int(random(2,5)); //speed of ped
+        pedArr[i][3]=int(random(0,256));
+        pedArr[i][4]=int(random(0,256));
+        pedArr[i][5]=int(random(0,256));
     }
     for(int i=0;i<=2;i++){
         primeBottles[i][0]=int(random((width/5)+19,(width*4/5)-19));
@@ -86,16 +89,19 @@ void ped() {
     for(int i=0;i<=5;i++){
         pedArr[i][1]+=pedArr[i][2]; //speed of ped gets added to ycoordinate of ped
         strokeWeight(2);
-        fill(200,100,100);
+        fill(pedArr[i][3],pedArr[i][4],pedArr[i][5]);
         rectMode(CENTER);
         rect(pedArr[i][0],pedArr[i][1],50,20,10);
         rectMode(CORNER);
-        fill(200,100,100);
+        fill(pedArr[i][3],pedArr[i][4],pedArr[i][5]);
         circle(pedArr[i][0],pedArr[i][1]+3,25);
         if (pedArr[i][1] > height+10) { //ped goes offscreen
             pedArr[i][0]=int(random(width/5+25,(width*4/5)-25));
             pedArr[i][1]=-20;
             pedArr[i][2]=int(random(2,5));
+            pedArr[i][3]=int(random(0,256));
+            pedArr[i][4]=int(random(0,256));
+            pedArr[i][5]=int(random(0,256));
         }
     }
 }
