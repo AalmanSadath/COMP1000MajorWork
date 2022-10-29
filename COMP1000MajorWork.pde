@@ -4,23 +4,32 @@ float xEnemy=250;
 float walkRate=0;
 float yTree=0;
 
-float[] scale= new float[8];
-float[] radius= new float[8];
-int[] bulbs=new int[8];
-
+float[] scaleArr= new float[8];
+float[] radiusArr= new float[8];
+int[] bulbsArr=new int[8];
+int[] treeHeights={-1,1,3,5};
+int[][] pedArr=new int[6][3];
 
 void setup() {
     size(500,750);
+    for(int i=0;i<=7;i++){
+        scaleArr[i]=random(10, 50);
+        radiusArr[i]=random(10, 40);
+        bulbsArr[i]=int(random(3,10));
+    }
+    for(int i=0;i<=5;i++){
+        pedArr[i][0]=int(random(width/5+25,(width*4/5)-25));
+        pedArr[i][1]=-20;
+        pedArr[i][2]=int(random(2,5));
+    }
 }
 
 
 void draw() {
-    //grass();
-    genGrass();
     wallysWalk();
-    
+    genGrass();
     if (yTree>=height/3) {
-        //treeTransfer();
+        treeTransfer();
         yTree=0;
     }
     yTree++;
@@ -29,7 +38,6 @@ void draw() {
         walkRate=0;
     }
     player();
-    yEnemy=yEnemy+3;
     ped();
     if (collisionPed() == true) {
         fill(100,100,100,98);
@@ -42,18 +50,13 @@ void draw() {
     }
 }
 
-void grass() {
-    fill(0,155,0);
-    rect(0,0,width/5,height);
-    rect(width*4/5,0,width/5,height);
-}
-
 void player() {
     //skateboard
+    stroke(0);
     strokeWeight(3);
     fill(100);
     rectMode(CENTER);
-    rect(xCord,675,30,100,20);
+    rect(xCord,675,30,100);
     //personarms
     fill(0,150,0);
     strokeWeight(1);
@@ -67,32 +70,39 @@ void player() {
 }
 
 void ped() {
-    strokeWeight(2);
-    fill(200,100,100);
-    rectMode(CENTER);
-    rect(xEnemy,yEnemy,50,20,10);
-    rectMode(CORNER);
-    fill(200,100,100,99);
-    circle(xEnemy,yEnemy+3,25);
-    if (yEnemy > 750) {
-        yEnemy=-100;
+    for(int i=0;i<=5;i++){
+        pedArr[i][1]+=pedArr[i][2];
+        strokeWeight(2);
+        fill(200,100,100);
+        rectMode(CENTER);
+        rect(pedArr[i][0],pedArr[i][1],50,20,10);
+        rectMode(CORNER);
+        fill(200,100,100);
+        circle(pedArr[i][0],pedArr[i][1]+3,25);
+        if (pedArr[i][1] > height+10) {
+            pedArr[i][0]=int(random(width/5+25,(width*4/5)-25));
+            pedArr[i][1]=-20;
+            pedArr[i][2]=int(random(2,5));
+        }
     }
 }
 
 void keyPressed() {
-    if (keyCode == 37) {
+    if (keyCode == 37 | keyCode == 65) {
         xCord=constrain(xCord-5,115,385);
     }
-    else if (keyCode == 39) {
+    else if (keyCode == 39 | keyCode == 68) {
         xCord=constrain(xCord+5,115,385);
     }
 }
 
 boolean collisionPed() {
-    float distX=abs(xCord-xEnemy);
-    float distY=abs(675-yEnemy);
-    if (distX <= 40 && distY <= 60) {
-        return true;
+    for(int i=0;i<=5;i++){
+        float distX=abs(xCord-pedArr[i][0]);
+        float distY=abs(675-pedArr[i][1]);
+        if (distX <= 40 && distY <= 60) {
+            return true;
+        }
     }
     return false;
 }
@@ -101,6 +111,7 @@ void wallysWalk() {
     rectMode(CORNER);
     fill(193,193,171);
     strokeWeight(2);
+    stroke(0);
     for (float rows=0; rows<16; rows++) {
         for (float columns=0; columns<6; columns++) {
             rect(width/5+(columns*50),walkRate+(50*rows)-50,50,50);
@@ -110,32 +121,52 @@ void wallysWalk() {
 
 void genGrass() {
     rectMode(CENTER);
-    fill(0,155,0);
-    strokeWeight(2);
-    //for(int i=-1;i<=5;i+=2){
-    //   rect(width/10,yTree+(height*i/6),width/5,height/3);
-    //    //drawTree(width/10,yTree+(height*i/6),scale[0],bulbs[0],radius[0]);
-    //    rect(width*9/10,yTree+(height*i/6),width/5,height/3);
-        //drawTree(width/10,yTree+(height*i/6),scale[0],bulbs[0],radius[0]);
-    //}
-    rect(width/10,yTree-height/6,width/5,height/3);
-    //drawTree(width/10,yTree-height/6,scale[0],bulbs[0],radius[0]);
-    rect(width/10,yTree+height/6,width/5,height/3);
-    //drawTree(width/10,yTree+height/6,scale[1],bulbs[1],radius[1]);
-    rect(width/10,yTree+(height*3/6),width/5,height/3);
-    //drawTree(width/10,yTree+(height*3/6),scale[2],bulbs[2],radius[2]);
-    rect(width/10,yTree+(height*5/6),width/5,height/3);
-    //drawTree(width/10,yTree+(height*5/6),scale[3],bulbs[3],radius[3]);
-    rect(width*9/10,yTree-height/6,width/5,height/3);
-    //drawTree(width*9/10,yTree-height/6,scale[4],bulbs[4],radius[4]);
-    rect(width*9/10,yTree+height/6,width/5,height/3);
-    //drawTree(width*9/10,yTree+height/6,scale[5],bulbs[5],radius[5]);
-    rect(width*9/10,yTree+(height*3/6),width/5,height/3);
-    //drawTree(width*9/10,yTree+(height*3/6),scale[6],bulbs[6],radius[6]);
-    rect(width*9/10,yTree+(height*5/6),width/5,height/3);
-    //drawTree(width*9/10,yTree+(height*5/6),scale[7],bulbs[7],radius[7]);
+    for(int i=0;i<=3;i++){
+        for(int j=1; j<=9;j+=8){
+
+            if(j==1){
+                fill(0,155,0);
+                noStroke();
+                rect(width*j/10,yTree+(height*treeHeights[i]/6),width/5,height/3);
+                drawTree(width*j/10,int(yTree+(height*treeHeights[i]/6)),scaleArr[i],bulbsArr[i],radiusArr[i]);
+            }
+
+            else if(j==9){
+                fill(0,155,0);
+                noStroke();
+                rect(width*j/10,yTree+(height*treeHeights[i]/6),width/5,height/3);
+                drawTree(width*j/10,int(yTree+(height*treeHeights[i]/6)),scaleArr[i+4],bulbsArr[i+4],radiusArr[i+4]);
+            }
+        }
+    }
 }
 
 void drawTree(int x, int y, float scale, int bulbs, float radius){
+    for(int i=1;i<=bulbs;i++){
+        int n=i-1;
+        float xCordBranch=radius*cos(2*n*3.14/bulbs)+x;
+        float yCordBranch=radius*sin(2*n*3.14/bulbs)+y;
+        strokeWeight(5);
+        stroke(79, 57, 9);
+        line(x,y,xCordBranch,yCordBranch);
+        strokeWeight(0);
+        fill(22, 51, 11);
+        circle(xCordBranch,yCordBranch,scale);
+    }
+}
 
+void treeTransfer(){
+    for(int i=3;i>0;i--){
+        scaleArr[i]=scaleArr[i-1];
+        scaleArr[i+4]=scaleArr[i+3];
+        radiusArr[i]=radiusArr[i-1];
+        radiusArr[i+4]=radiusArr[i+3];
+        bulbsArr[i]=bulbsArr[i-1];
+        bulbsArr[i+4]=bulbsArr[i+3];
+    }
+    for(int i=0;i<=4;i+=4){
+        scaleArr[i]=random(10, 50);
+        radiusArr[i]=random(10, 40);
+        bulbsArr[i]=int(random(3,10));
+    }
 }
