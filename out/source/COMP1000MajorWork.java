@@ -16,8 +16,6 @@ public class COMP1000MajorWork extends PApplet {
 
 float xCord=250;
 float yCord=675;
-float yEnemy=-20;
-float xEnemy=250;
 float walkRate=0;
 float yTree=0;
 int points=0;
@@ -54,6 +52,7 @@ public void setup() {
 public void draw() {
     wallysWalk();
     genGrass();
+    pointBoard();
     genPrime();
     if (yTree>=height/3) { //4th grass "tile" goes of screen
         treeTransfer();
@@ -176,7 +175,7 @@ public void genGrass() {
     }
 }
 
-public void drawTree(int x, int y, float scale, int bulbs, float radius){
+public void drawTree(float x, float y, float scale, int bulbs, float radius){
     for(int i=1;i<=bulbs;i++){
         int n=i-1;
         float xCordBranch=radius*cos(2*n*3.14f/bulbs)+x; //gets xcoordinates of the tip of a certain branch
@@ -216,6 +215,9 @@ public void genPrime(){
         fill(0);
         text("PRIME",primeBottles[i][0],primeBottles[i][1]+5);
         primeBottles[i][1]++;
+        if(primeBottles[i][1]>750){
+            primeBottles[i][1]=-19;
+        }
     }
 }
 
@@ -225,10 +227,18 @@ public void primeCollison(){
         float distY=abs(yCord-primeBottles[i][1]);
         if (distX <= 34 && distY <= 69) {
             primeBottles[i][0]=PApplet.parseInt(random((width/5)+19,(width*4/5)-19));
-            primeBottles[i][1]=i*(-250);
+            primeBottles[i][1]=-19;
             points++;
         }
     }
+}
+
+public void pointBoard(){
+    textSize(20);
+    fill(0);
+    textAlign(CORNER);
+    text("Prime : ",width*4/5+2,730);
+    text(points,width*4/5+73,730);
 }
   public void settings() {  size(500,750); }
   static public void main(String[] passedArgs) {

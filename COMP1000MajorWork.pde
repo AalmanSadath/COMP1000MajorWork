@@ -1,7 +1,5 @@
 float xCord=250;
 float yCord=675;
-float yEnemy=-20;
-float xEnemy=250;
 float walkRate=0;
 float yTree=0;
 int points=0;
@@ -38,6 +36,7 @@ void setup() {
 void draw() {
     wallysWalk();
     genGrass();
+    pointBoard();
     genPrime();
     if (yTree>=height/3) { //4th grass "tile" goes of screen
         treeTransfer();
@@ -160,7 +159,7 @@ void genGrass() {
     }
 }
 
-void drawTree(int x, int y, float scale, int bulbs, float radius){
+void drawTree(float x, float y, float scale, int bulbs, float radius){
     for(int i=1;i<=bulbs;i++){
         int n=i-1;
         float xCordBranch=radius*cos(2*n*3.14/bulbs)+x; //gets xcoordinates of the tip of a certain branch
@@ -200,6 +199,9 @@ void genPrime(){
         fill(0);
         text("PRIME",primeBottles[i][0],primeBottles[i][1]+5);
         primeBottles[i][1]++;
+        if(primeBottles[i][1]>750){
+            primeBottles[i][1]=-19;
+        }
     }
 }
 
@@ -209,8 +211,16 @@ void primeCollison(){
         float distY=abs(yCord-primeBottles[i][1]);
         if (distX <= 34 && distY <= 69) {
             primeBottles[i][0]=int(random((width/5)+19,(width*4/5)-19));
-            primeBottles[i][1]=i*(-250);
+            primeBottles[i][1]=-19;
             points++;
         }
     }
+}
+
+void pointBoard(){
+    textSize(20);
+    fill(0);
+    textAlign(CORNER);
+    text("Prime : ",width*4/5+2,730);
+    text(points,width*4/5+73,730);
 }
